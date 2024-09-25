@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: mi_app_php
+    ports:
+      - "8181:80" 
+    volumes:
+      - .:/var/www/html  # 
+    depends_on:
+      - db  # 
+    networks:
+      - app-network
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Aquí defines la contraseña del usuario root
+      MYSQL_DATABASE: lab2        # La base de datos inicial
+    volumes:
+      - ./basededatos.sql:/docker-entrypoint-initdb.d/init.sql  # Inicializa la base de datos con este archivo SQL
+    ports:
+      - "3306:3306"  # Expon el puerto 3306
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

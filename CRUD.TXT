@@ -1,0 +1,68 @@
+<?php
+    include_once("../conexion.php");
+    $codigo=null;
+    $nombre=null;
+    $precio=null;
+    $observacion=null;
+    $opcion=0;
+    $sql=null;
+
+    if(isset($_POST["crear"])){
+        $opcion=1;
+    }
+    if(isset($_POST["editar"])){
+        $opcion=2;
+    }
+    if(isset($_POST["eliminar"])){
+        $opcion=3;
+        //echo $_POST["eliminar"];
+    }
+echo $opcion;
+    if(isset($_POST["codigo"]))
+    {
+        $codigo=$_POST["codigo"];
+    }
+
+    if(isset($_POST["producto"]))
+    {
+        $nombre=$_POST["producto"];
+    }
+    if(isset($_POST["valor"])){
+        $precio=$_POST["valor"];
+    }
+    if(isset($_POST["observaciones"])){
+        $observacion=$_POST["observaciones"];
+    }
+    // para crear o insertar
+    echo $codigo . ' ' . $nombre . ' '.$precio .' '.$observacion;
+
+
+    if($opcion==1){
+        echo 'si entra insert';
+        if(isset($nombre) ){
+            $sql="insert into producto(codigo,descripcion,precio,observaciones) values(".$codigo.",'".$nombre."','".$precio."','".$observacion."');";    
+        }
+    }else if($opcion==2){
+        echo 'si entra update';
+        if(isset($codigo) ){
+            $sql="update producto set descripcion='".$nombre."', precio='".$precio."', observaciones='".$observacion."' where codigo=".$codigo.";";    
+        }
+    }else if($opcion==3){
+        echo 'si entra delete';
+        if(isset($codigo) ){
+            $sql="delete from producto where codigo=".$codigo.";";    
+        }
+    }
+    echo $opcion;
+    echo $sql;
+    if($cn->query($sql)){
+        //echo $cn->info();
+        echo "Ejecucion con Exitoso";
+    }else{
+        echo $cn->error;
+    }
+    mysqli_close($cn);
+    header(header: 'Location: ../../../Productos.php');
+  
+    
+?>
